@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dabarto.Util.Teryt.Parser", "Dabarto.Util.Teryt.Parser\Dabarto.Util.Teryt.Parser.csproj", "{39C667C1-12E4-4E11-9B36-E8A0286290DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dabarto.Util.Teryt.SampleApplication", "Dabarto.Util.Teryt.SampleApplication\Dabarto.Util.Teryt.SampleApplication.csproj", "{2226AB0F-292B-4F85-BFEF-02D0D6FC2674}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{39C667C1-12E4-4E11-9B36-E8A0286290DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39C667C1-12E4-4E11-9B36-E8A0286290DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39C667C1-12E4-4E11-9B36-E8A0286290DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39C667C1-12E4-4E11-9B36-E8A0286290DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2226AB0F-292B-4F85-BFEF-02D0D6FC2674}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2226AB0F-292B-4F85-BFEF-02D0D6FC2674}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2226AB0F-292B-4F85-BFEF-02D0D6FC2674}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2226AB0F-292B-4F85-BFEF-02D0D6FC2674}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
