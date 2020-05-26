@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\TerytParserException.cs" />
     <Compile Include="Exporters\CsvExporter.cs" />
     <Compile Include="Exporters\SqlQueryExporter.cs" />
     <Compile Include="OutputModelCreator.cs" />

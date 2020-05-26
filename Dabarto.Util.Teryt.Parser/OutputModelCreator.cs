@@ -1,4 +1,5 @@
-﻿using Dabarto.Util.Teryt.Parser.OutputModel;
+﻿using Dabarto.Util.Teryt.Parser.Exceptions;
+using Dabarto.Util.Teryt.Parser.OutputModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,7 +72,7 @@ namespace Dabarto.Util.Teryt.Parser
             return loc;
         }
 
-        private List<Wojewodztwo> GetWojewodztwa(TerytModel.Teryt teryt)
+        public List<Wojewodztwo> GetWojewodztwa(TerytModel.Teryt teryt)
         {
             var list = new List<Wojewodztwo>();
 
@@ -85,35 +86,51 @@ namespace Dabarto.Util.Teryt.Parser
             return list;
         }
 
-        private List<Powiat> GetPowiaty(TerytModel.Teryt teryt, List<Wojewodztwo> wojewodztwa)
+        public List<Powiat> GetPowiaty(TerytModel.Teryt teryt, List<Wojewodztwo> wojewodztwa)
         {
             var list = new List<Powiat>();
 
-            list.AddRange(teryt.Terc.Rows.Where(q => !string.IsNullOrWhiteSpace(q.Pow) && string.IsNullOrWhiteSpace(q.Gmi)).Select(q => new Powiat
+            foreach (var row in teryt.Terc.Rows.Where(q => !string.IsNullOrWhiteSpace(q.Pow) && string.IsNullOrWhiteSpace(q.Gmi)))
             {
-                Nazwa = q.Nazwa,
-                Rodzaj = q.NazDod,
-                StanNa = DateTime.Parse(q.StanNa),
-                Symbol = q.Pow,
-                Wojewodztwo = wojewodztwa.Single(r => r.Symbol == q.Woj)
-            }));
+                var province = wojewodztwa.SingleOrDefault(r => r.Symbol == row.Woj);
+                if (province == null)
+                {
+                    throw new TerytParserException($"Unable to find province {row.Woj} for county {row.Pow}");
+                }
+                list.Add(new Powiat
+                {
+                    Nazwa = row.Nazwa,
+                    Rodzaj = row.NazDod,
+                    StanNa = DateTime.Parse(row.StanNa),
+                    Symbol = row.Pow,
+                    Wojewodztwo = province
+                });
+            }
 
             return list;
         }
 
-        private List<Gmina> GetGminy(TerytModel.Teryt teryt, List<Powiat> powiaty)
+        public List<Gmina> GetGminy(TerytModel.Teryt teryt, List<Powiat> powiaty)
         {
             var list = new List<Gmina>();
 
-            list.AddRange(teryt.Terc.Rows.Where(q => !string.IsNullOrWhiteSpace(q.Gmi)).Select(q => new Gmina
+            foreach (var row in teryt.Terc.Rows.Where(q => !string.IsNullOrWhiteSpace(q.Gmi)))
             {
-                Nazwa = q.Nazwa,
-                Rodzaj = q.NazDod,
-                RodzajId = q.Rodz,
-                StanNa = DateTime.Parse(q.StanNa),
-                Symbol = q.Gmi,
-                Powiat = powiaty.Single(r => r.Symbol == q.Pow && r.Wojewodztwo.Symbol == q.Woj)
-            }));
+                var county = powiaty.SingleOrDefault(r => r.Symbol == row.Pow && r.Wojewodztwo.Symbol == row.Woj);
+                if (county == null)
+                {
+                    throw new TerytParserException($"Unable to find county {row.Pow} for commune {row.Gmi}");
+                }
+                list.Add(new Gmina
+                {
+                    Nazwa = row.Nazwa,
+                    Rodzaj = row.NazDod,
+                    RodzajId = row.Rodz,
+                    StanNa = DateTime.Parse(row.StanNa),
+                    Symbol = row.Gmi,
+                    Powiat = powiaty.Single(r => r.Symbol == row.Pow && r.Wojewodztwo.Symbol == row.Woj)
+                });
+            }
 
             // clean up
             var cityCommunes = list.Where(q => q.RodzajId == "3").ToList();
@@ -125,7 +142,7 @@ namespace Dabarto.Util.Teryt.Parser
             return list;
         }
 
-        private List<Miejscowosc> GetMiejscowosci(TerytModel.Teryt teryt, List<Gmina> gminy)
+        public List<Miejscowosc> GetMiejscowosci(TerytModel.Teryt teryt, List<Gmina> gminy)
         {
             _miejscowosciDictionary = new Dictionary<string, Miejscowosc>();
             var list = new List<Miejscowosc>();
@@ -149,7 +166,7 @@ namespace Dabarto.Util.Teryt.Parser
             return list;
         }
 
-        private List<Dzielnica> GetDzielnice(TerytModel.Teryt teryt)
+        public List<Dzielnica> GetDzielnice(TerytModel.Teryt teryt)
         {
             var list = new List<Dzielnica>();
 
@@ -164,7 +181,7 @@ namespace Dabarto.Util.Teryt.Parser
             return list;
         }
 
-        private List<Ulica> GetUlice(TerytModel.Teryt teryt)
+        public List<Ulica> GetUlice(TerytModel.Teryt teryt)
         {
             var list = new List<Ulica>();
 
